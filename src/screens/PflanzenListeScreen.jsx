@@ -1,7 +1,17 @@
 import React from "react";
-import { View, Text, Button, StyleSheet } from "react-native";
+import { View, Text, Button, StyleSheet, Alert } from "react-native";
+import { abmelden } from "../services/authService";
 
 export default function PflanzenListeScreen({ navigation }) {
+  async function handleAbmelden() {
+    try {
+      await abmelden();
+    } catch (error) {
+      Alert.alert("Fehler", "Abmelden fehlgeschlagen.");
+      console.log(error.message);
+    }
+  }
+
   return (
     <View style={styles.container}>
       <Text style={styles.title}>Meine Pflanzen</Text>
@@ -13,14 +23,11 @@ export default function PflanzenListeScreen({ navigation }) {
       />
 
       <Button
-        title="Demo Detailansicht öffnen"
+        title="Demo Detailansicht oeffnen"
         onPress={() => navigation.navigate("PflanzeDetail")}
       />
 
-      <Button
-        title="Abmelden"
-        onPress={() => navigation.navigate("Anmeldung")}
-      />
+      <Button title="Abmelden" onPress={handleAbmelden} />
     </View>
   );
 }

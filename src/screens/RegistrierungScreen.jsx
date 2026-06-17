@@ -28,7 +28,6 @@ export default function RegistrierungScreen({ navigation }) {
       setLaedt(true);
       await registrieren(email, passwort);
       Alert.alert("Erfolg", "Konto wurde erstellt.");
-      navigation.replace("PflanzenListe");
     } catch (error) {
       Alert.alert("Fehler", "Registrierung fehlgeschlagen.");
       console.log(error.message);

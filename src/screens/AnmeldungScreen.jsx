@@ -16,7 +16,6 @@ export default function AnmeldungScreen({ navigation }) {
     try {
       setLaedt(true);
       await anmelden(email, passwort);
-      navigation.replace("PflanzenListe");
     } catch (error) {
       Alert.alert("Fehler", "Anmeldung fehlgeschlagen.");
       console.log(error.message);
