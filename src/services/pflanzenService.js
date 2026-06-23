@@ -48,3 +48,14 @@ export async function pflanzeErstellen(name, pflanzenart, notizen) {
 
   return data;
 }
+
+export async function pflanzeLöschen(pflanzenId) {
+  const { error } = await supabase
+    .from("pflanzen")
+    .delete()
+    .eq("id", pflanzenId);
+
+  if (error) {
+    throw error;
+  }
+}
