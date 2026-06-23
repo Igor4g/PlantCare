@@ -14,6 +14,7 @@ import PflanzenListeScreen from "./src/screens/PflanzenListeScreen";
 import PflanzeErfassenScreen from "./src/screens/PflanzeErfassenScreen";
 import PflanzeDetailScreen from "./src/screens/PflanzeDetailScreen";
 import PflegeAufgabeScreen from "./src/screens/PflegeAufgabeScreen";
+import PflanzeErkennenScreen from "./src/screens/PflanzeErkennenScreen";
 import { appSchrift } from "./src/components/AppText";
 
 const Stack = createNativeStackNavigator();
@@ -96,6 +97,11 @@ function AppStack() {
         name="PflegeAufgabe"
         component={PflegeAufgabeScreen}
         options={{ title: "Pflegeaufgabe" }}
+      />
+      <Stack.Screen
+        name="PflanzeErkennen"
+        component={PflanzeErkennenScreen}
+        options={{ title: "Pflanze erkennen" }}
       />
     </Stack.Navigator>
   );

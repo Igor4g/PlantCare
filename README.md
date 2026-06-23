@@ -13,8 +13,9 @@ Die App hilft, eigene Pflanzen zu erfassen, Fotos zu speichern und Pflegeaufgabe
 - Expo Image Picker
 - Expo Notifications
 - React Native Vibration
+- NVIDIA API für optionale KI-Pflanzenerkennung
 
-Hinweis: In der ursprünglichen Planung war Firebase vorgesehen. Wegen technischen Problemen wurde im Projekt Supabase verwendet.
+Hinweis: In der ursprünglichen Planung war Firebase vorgesehen. Wegen technischen Problemen wurde im Projekt Supabase verwendet. Diese Änderung wurde im Unterricht erlaubt.
 
 ## Funktionen
 
@@ -40,6 +41,7 @@ Hinweis: In der ursprünglichen Planung war Firebase vorgesehen. Wegen technisch
 - Pflegeaufgaben löschen
 - Vibration nach dem Speichern einer Pflegeaufgabe
 - Geplante lokale Benachrichtigungen für Pflegeaufgaben
+- Optionale KI-Pflanzenerkennung mit Foto
 
 ## Sensoren und Aktoren
 
@@ -91,6 +93,18 @@ npx expo start -c
 
 Danach den QR-Code mit Expo Go auf dem Handy scannen.
 
+Für die optionale KI-Funktion muss in `.env` zusätzlich ein NVIDIA API-Key gesetzt werden:
+
+```bash
+EXPO_PUBLIC_NVIDIA_API_KEY=dein_api_key
+```
+
+Verwendetes Modell:
+
+- `minimaxai/minimax-m3`
+
+Hinweis: Der API-Key liegt bei dieser einfachen Schulprojekt-Version in der Expo-Umgebung. Für eine produktive App sollte ein Server oder eine Supabase Edge Function als sicherer Proxy verwendet werden.
+
 ## Testplan
 
 | Nr. | Testfall | Erwartetes Ergebnis |
@@ -113,3 +127,4 @@ Danach den QR-Code mit Expo Go auf dem Handy scannen.
 - APK Build erstellen
 - Lokale Benachrichtigung in APK oder Development Build vollständig testen
 - Dokumentation mit Screenshots ergänzen
+- KI-Funktion mit eigenem NVIDIA API-Key testen

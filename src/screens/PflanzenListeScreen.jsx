@@ -48,6 +48,11 @@ export default function PflanzenListeScreen({ navigation }) {
         onPress={() => navigation.navigate("PflanzeErfassen")}
       />
 
+      <AppButton
+        title="Unbekannte Pflanze erkennen"
+        onPress={() => navigation.navigate("PflanzeErkennen")}
+      />
+
       {lädt ? <AppText>Pflanzen werden geladen...</AppText> : null}
 
       <FlatList
