@@ -10,7 +10,7 @@ export default function RegistrierungScreen({ navigation }) {
 
   async function handleRegistrieren() {
     if (!email || !passwort || !passwortWiederholung) {
-      Alert.alert("Fehler", "Bitte alle Felder ausfuellen.");
+      Alert.alert("Fehler", "Bitte alle Felder ausfüllen.");
       return;
     }
 
@@ -20,7 +20,7 @@ export default function RegistrierungScreen({ navigation }) {
     }
 
     if (passwort !== passwortWiederholung) {
-      Alert.alert("Fehler", "Die Passwoerter stimmen nicht ueberein.");
+      Alert.alert("Fehler", "Die Passwörter stimmen nicht überein.");
       return;
     }
 
@@ -72,7 +72,7 @@ export default function RegistrierungScreen({ navigation }) {
       />
 
       <Button
-        title="Zurueck zur Anmeldung"
+        title="Zurück zur Anmeldung"
         onPress={() => navigation.navigate("Anmeldung")}
       />
     </View>
