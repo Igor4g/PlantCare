@@ -1,9 +1,11 @@
 import React, { useCallback, useState } from "react";
-import { View, Text, Button, StyleSheet, Alert, FlatList } from "react-native";
+import { View, StyleSheet, Alert, FlatList } from "react-native";
 import { useFocusEffect } from "@react-navigation/native";
 import { abmelden } from "../services/authService";
 import { pflanzenLaden } from "../services/pflanzenService";
 import PflanzeKarte from "../components/PflanzeKarte";
+import AppText from "../components/AppText";
+import AppButton from "../components/AppButton";
 
 export default function PflanzenListeScreen({ navigation }) {
   const [pflanzen, setPflanzen] = useState([]);
@@ -39,20 +41,20 @@ export default function PflanzenListeScreen({ navigation }) {
 
   return (
     <View style={styles.container}>
-      <Text style={styles.title}>Meine Pflanzen</Text>
+      <AppText style={styles.title}>Meine Pflanzen</AppText>
 
-      <Button
+      <AppButton
         title="Neue Pflanze erfassen"
         onPress={() => navigation.navigate("PflanzeErfassen")}
       />
 
-      {lädt ? <Text>Pflanzen werden geladen...</Text> : null}
+      {lädt ? <AppText>Pflanzen werden geladen...</AppText> : null}
 
       <FlatList
         data={pflanzen}
         keyExtractor={(item) => item.id}
         ListEmptyComponent={
-          <Text style={styles.empty}>Noch keine Pflanzen erfasst.</Text>
+          <AppText style={styles.empty}>Noch keine Pflanzen erfasst.</AppText>
         }
         renderItem={({ item }) => (
           <PflanzeKarte
@@ -64,7 +66,7 @@ export default function PflanzenListeScreen({ navigation }) {
         )}
       />
 
-      <Button title="Abmelden" onPress={handleAbmelden} />
+      <AppButton title="Abmelden" onPress={handleAbmelden} />
     </View>
   );
 }

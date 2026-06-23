@@ -1,6 +1,8 @@
 import React, { useState } from "react";
-import { View, Text, TextInput, Button, StyleSheet, Alert } from "react-native";
+import { View, TextInput, StyleSheet, Alert } from "react-native";
 import { anmelden } from "../services/authService";
+import AppText, { appSchrift } from "../components/AppText";
+import AppButton from "../components/AppButton";
 
 export default function AnmeldungScreen({ navigation }) {
   const [email, setEmail] = useState("");
@@ -26,8 +28,8 @@ export default function AnmeldungScreen({ navigation }) {
 
   return (
     <View style={styles.container}>
-      <Text style={styles.title}>PlantCare</Text>
-      <Text style={styles.subtitle}>Anmeldung</Text>
+      <AppText style={styles.title}>PlantCare</AppText>
+      <AppText style={styles.subtitle}>Anmeldung</AppText>
 
       <TextInput
         style={styles.input}
@@ -46,13 +48,13 @@ export default function AnmeldungScreen({ navigation }) {
         secureTextEntry
       />
 
-      <Button
+      <AppButton
         title={laedt ? "Bitte warten..." : "Anmelden"}
         onPress={handleAnmelden}
         disabled={laedt}
       />
 
-      <Button
+      <AppButton
         title="Konto erstellen"
         onPress={() => navigation.navigate("Registrierung")}
       />
@@ -82,5 +84,6 @@ const styles = StyleSheet.create({
     borderColor: "#999",
     padding: 12,
     borderRadius: 6,
+    fontFamily: appSchrift,
   },
 });

@@ -1,8 +1,10 @@
 import React from "react";
-import { Pressable, StyleSheet, Text, View } from "react-native";
+import { Pressable, StyleSheet, View } from "react-native";
+import AppText from "./AppText";
 
 export default function PflegeAufgabeEintrag({
   aufgabe,
+  onBearbeiten,
   onErledigtWechseln,
   onLöschen,
 }) {
@@ -14,14 +16,14 @@ export default function PflegeAufgabeEintrag({
       ]}
     >
       <View style={styles.kopf}>
-        <Text style={styles.typ}>{aufgabe.typ}</Text>
+        <AppText style={styles.typ}>{aufgabe.typ}</AppText>
         <View
           style={[
             styles.status,
             aufgabe.erledigt ? styles.statusErledigt : styles.statusOffen,
           ]}
         >
-          <Text
+          <AppText
             style={[
               styles.statusText,
               aufgabe.erledigt
@@ -30,14 +32,21 @@ export default function PflegeAufgabeEintrag({
             ]}
           >
             {aufgabe.erledigt ? "Erledigt" : "Offen"}
-          </Text>
+          </AppText>
         </View>
       </View>
 
-      <Text>Erinnerung: {datumAnzeigen(aufgabe.erinnerung_am)}</Text>
-      <Text>Wiederholung: {aufgabe.wiederholung || "nicht gesetzt"}</Text>
+      <AppText>Erinnerung: {datumAnzeigen(aufgabe.erinnerung_am)}</AppText>
+      <AppText>Wiederholung: {aufgabe.wiederholung || "nicht gesetzt"}</AppText>
 
       <View style={styles.buttons}>
+        <Pressable
+          style={styles.bearbeitenButton}
+          onPress={() => onBearbeiten(aufgabe)}
+        >
+          <AppText style={styles.bearbeitenText}>Bearbeiten</AppText>
+        </Pressable>
+
         <Pressable
           style={[
             styles.aktionButton,
@@ -45,16 +54,16 @@ export default function PflegeAufgabeEintrag({
           ]}
           onPress={() => onErledigtWechseln(aufgabe)}
         >
-          <Text style={styles.aktionText}>
+          <AppText style={styles.aktionText}>
             {aufgabe.erledigt ? "Wieder offen" : "Als erledigt markieren"}
-          </Text>
+          </AppText>
         </Pressable>
 
         <Pressable
           style={styles.löschenButton}
           onPress={() => onLöschen(aufgabe)}
         >
-          <Text style={styles.löschenText}>Löschen</Text>
+          <AppText style={styles.löschenText}>Löschen</AppText>
         </Pressable>
       </View>
     </View>
@@ -123,6 +132,17 @@ const styles = StyleSheet.create({
   buttons: {
     marginTop: 6,
     gap: 8,
+  },
+  bearbeitenButton: {
+    borderWidth: 1,
+    borderColor: "#1976d2",
+    borderRadius: 6,
+    padding: 12,
+    alignItems: "center",
+  },
+  bearbeitenText: {
+    color: "#1976d2",
+    fontWeight: "bold",
   },
   aktionButton: {
     borderRadius: 6,

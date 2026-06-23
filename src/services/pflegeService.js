@@ -106,6 +106,50 @@ export async function pflegeAufgabeErledigtSetzen(
   return data;
 }
 
+export async function pflegeAufgabeAktualisieren(
+  aufgabeId,
+  pflanzenId,
+  typ,
+  erinnerungAm,
+  wiederholung
+) {
+  const { data: alteAufgabe, error: ladeError } = await supabase
+    .from("pflegeaufgaben")
+    .select("notification_id, erledigt")
+    .eq("id", aufgabeId)
+    .single();
+
+  if (ladeError) {
+    throw ladeError;
+  }
+
+  await benachrichtigungAbbrechen(alteAufgabe.notification_id);
+
+  const notificationId = alteAufgabe.erledigt
+    ? null
+    : await benachrichtigungPlanen(typ, erinnerungAm, wiederholung);
+
+  const { data, error } = await supabase
+    .from("pflegeaufgaben")
+    .update({
+      typ: typ,
+      erinnerung_am: erinnerungAm,
+      wiederholung: wiederholung,
+      notification_id: notificationId,
+    })
+    .eq("id", aufgabeId)
+    .select()
+    .single();
+
+  if (error) {
+    throw error;
+  }
+
+  await naechstePflegeAktualisieren(pflanzenId);
+
+  return data;
+}
+
 export async function pflegeAufgabeLöschen(aufgabeId, pflanzenId) {
   const { data: aufgabe, error: ladeError } = await supabase
     .from("pflegeaufgaben")

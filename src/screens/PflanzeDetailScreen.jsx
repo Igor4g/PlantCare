@@ -1,10 +1,8 @@
 import React, { useCallback, useState } from "react";
 import {
   Alert,
-  Button,
   ScrollView,
   StyleSheet,
-  Text,
   View,
 } from "react-native";
 import { useFocusEffect } from "@react-navigation/native";
@@ -25,6 +23,8 @@ import {
 } from "../services/pflegeService";
 import FotoVerlauf from "../components/FotoVerlauf";
 import PflegeAufgabeEintrag from "../components/PflegeAufgabeEintrag";
+import AppText from "../components/AppText";
+import AppButton from "../components/AppButton";
 
 export default function PflanzeDetailScreen({ route, navigation }) {
   const startPflanze = route.params?.pflanze;
@@ -220,6 +220,13 @@ export default function PflanzeDetailScreen({ route, navigation }) {
     }
   }
 
+  function handlePflegeBearbeiten(aufgabe) {
+    navigation.navigate("PflegeAufgabe", {
+      pflanze,
+      aufgabe,
+    });
+  }
+
   function handlePflegeLöschen(aufgabe) {
     Alert.alert(
       "Pflegeaufgabe löschen",
@@ -260,57 +267,64 @@ export default function PflanzeDetailScreen({ route, navigation }) {
   if (!pflanze) {
     return (
       <View style={styles.container}>
-        <Text>
+        <AppText>
           {lädt ? "Pflanze wird geladen..." : "Keine Pflanze ausgewählt."}
-        </Text>
+        </AppText>
       </View>
     );
   }
 
   return (
     <ScrollView contentContainerStyle={styles.container}>
-      {lädt ? <Text>Pflanze wird geladen...</Text> : null}
+      {lädt ? <AppText>Pflanze wird geladen...</AppText> : null}
 
-      <Text style={styles.title}>{pflanze.name}</Text>
+      <AppText style={styles.title}>{pflanze.name}</AppText>
 
-      <Text style={styles.label}>Pflanzenart:</Text>
-      <Text>{pflanze.pflanzenart || "Keine Pflanzenart erfasst"}</Text>
+      <AppText style={styles.label}>Pflanzenart:</AppText>
+      <AppText>{pflanze.pflanzenart || "Keine Pflanzenart erfasst"}</AppText>
 
-      <Text style={styles.label}>Notizen:</Text>
-      <Text>{pflanze.notizen || "Keine Notizen erfasst"}</Text>
+      <AppText style={styles.label}>Notizen:</AppText>
+      <AppText>{pflanze.notizen || "Keine Notizen erfasst"}</AppText>
 
-      <Text style={styles.label}>Fotoverlauf:</Text>
-      {fotosLadenAktiv ? <Text>Fotos werden geladen...</Text> : null}
+      <AppText style={styles.label}>Fotoverlauf:</AppText>
+      {fotosLadenAktiv ? <AppText>Fotos werden geladen...</AppText> : null}
       <FotoVerlauf fotos={fotos} onFotoLöschen={handleFotoLöschen} />
 
-      <Button title="Foto hinzufügen" onPress={handleFotoHinzufügen} />
+      <AppButton title="Foto hinzufügen" onPress={handleFotoHinzufügen} />
 
-      <Button
+      <AppButton
         title="Pflanze bearbeiten"
         onPress={() => navigation.navigate("PflanzeErfassen", { pflanze })}
       />
 
-      <Button
+      <AppButton
         title="Pflegeaufgabe erfassen"
         onPress={() => navigation.navigate("PflegeAufgabe", { pflanze })}
       />
 
-      <Text style={styles.label}>Pflegeaufgaben:</Text>
-      {pflegeLadenAktiv ? <Text>Pflegeaufgaben werden geladen...</Text> : null}
+      <AppText style={styles.label}>Pflegeaufgaben:</AppText>
+      {pflegeLadenAktiv ? (
+        <AppText>Pflegeaufgaben werden geladen...</AppText>
+      ) : null}
       {pflegeAufgaben.length === 0 ? (
-        <Text>Noch keine Pflegeaufgaben erfasst.</Text>
+        <AppText>Noch keine Pflegeaufgaben erfasst.</AppText>
       ) : (
         pflegeAufgaben.map((aufgabe) => (
           <PflegeAufgabeEintrag
             key={aufgabe.id}
             aufgabe={aufgabe}
+            onBearbeiten={handlePflegeBearbeiten}
             onErledigtWechseln={handlePflegeErledigtWechseln}
             onLöschen={handlePflegeLöschen}
           />
         ))
       )}
 
-      <Button title="Pflanze löschen" onPress={handleLöschen} />
+      <AppButton
+        title="Pflanze löschen"
+        onPress={handleLöschen}
+        variant="danger"
+      />
     </ScrollView>
   );
 }

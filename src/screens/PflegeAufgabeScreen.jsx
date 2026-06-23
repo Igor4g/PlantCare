@@ -1,27 +1,38 @@
 import React, { useState } from "react";
 import {
   Alert,
-  Button,
   Pressable,
   ScrollView,
   StyleSheet,
-  Text,
   View,
 } from "react-native";
 import DateTimePicker from "@react-native-community/datetimepicker";
-import { pflegeAufgabeErstellen } from "../services/pflegeService";
+import {
+  pflegeAufgabeAktualisieren,
+  pflegeAufgabeErstellen,
+} from "../services/pflegeService";
 import { kurzeVibration } from "../services/benachrichtigungService";
+import AppText from "../components/AppText";
+import AppButton from "../components/AppButton";
 
 const pflegeTypen = ["Giessen", "Düngen", "Umtopfen"];
 const wiederholungen = ["täglich", "wöchentlich", "monatlich"];
 
 export default function PflegeAufgabeScreen({ route, navigation }) {
   const pflanze = route.params?.pflanze;
+  const vorhandeneAufgabe = route.params?.aufgabe;
+  const istBearbeiten = !!vorhandeneAufgabe;
   const pflanzenId = route.params?.pflanzenId || pflanze?.id;
 
-  const [typ, setTyp] = useState("Giessen");
-  const [erinnerungDatum, setErinnerungDatum] = useState(standardDatum());
-  const [wiederholung, setWiederholung] = useState("täglich");
+  const [typ, setTyp] = useState(vorhandeneAufgabe?.typ || "Giessen");
+  const [erinnerungDatum, setErinnerungDatum] = useState(
+    vorhandeneAufgabe?.erinnerung_am
+      ? new Date(vorhandeneAufgabe.erinnerung_am)
+      : standardDatum()
+  );
+  const [wiederholung, setWiederholung] = useState(
+    vorhandeneAufgabe?.wiederholung || "täglich"
+  );
   const [pickerModus, setPickerModus] = useState(null);
   const [lädt, setLädt] = useState(false);
 
@@ -33,12 +44,24 @@ export default function PflegeAufgabeScreen({ route, navigation }) {
 
     try {
       setLädt(true);
-      await pflegeAufgabeErstellen(
-        pflanzenId,
-        typ,
-        erinnerungDatum.toISOString(),
-        wiederholung
-      );
+
+      if (istBearbeiten) {
+        await pflegeAufgabeAktualisieren(
+          vorhandeneAufgabe.id,
+          pflanzenId,
+          typ,
+          erinnerungDatum.toISOString(),
+          wiederholung
+        );
+      } else {
+        await pflegeAufgabeErstellen(
+          pflanzenId,
+          typ,
+          erinnerungDatum.toISOString(),
+          wiederholung
+        );
+      }
+
       kurzeVibration();
       navigation.goBack();
     } catch (error) {
@@ -61,9 +84,11 @@ export default function PflegeAufgabeScreen({ route, navigation }) {
 
   return (
     <ScrollView contentContainerStyle={styles.container}>
-      <Text style={styles.title}>Pflegeaufgabe erfassen</Text>
+      <AppText style={styles.title}>
+        {istBearbeiten ? "Pflegeaufgabe bearbeiten" : "Pflegeaufgabe erfassen"}
+      </AppText>
 
-      <Text style={styles.label}>Typ:</Text>
+      <AppText style={styles.label}>Typ:</AppText>
       <View style={styles.typAuswahl}>
         {pflegeTypen.map((pflegeTyp) => (
           <Pressable
@@ -74,32 +99,32 @@ export default function PflegeAufgabeScreen({ route, navigation }) {
             ]}
             onPress={() => setTyp(pflegeTyp)}
           >
-            <Text
+            <AppText
               style={[
                 styles.auswahlText,
                 pflegeTyp === typ ? styles.auswahlTextAktiv : null,
               ]}
             >
               {pflegeTyp}
-            </Text>
+            </AppText>
           </Pressable>
         ))}
       </View>
 
-      <Text style={styles.label}>Start der Erinnerung:</Text>
+      <AppText style={styles.label}>Start der Erinnerung:</AppText>
       <View style={styles.datumButtons}>
         <Pressable
           style={styles.datumButton}
           onPress={() => setPickerModus("date")}
         >
-          <Text>{datumAnzeigen(erinnerungDatum)}</Text>
+          <AppText>{datumAnzeigen(erinnerungDatum)}</AppText>
         </Pressable>
 
         <Pressable
           style={styles.datumButton}
           onPress={() => setPickerModus("time")}
         >
-          <Text>{zeitAnzeigen(erinnerungDatum)}</Text>
+          <AppText>{zeitAnzeigen(erinnerungDatum)}</AppText>
         </Pressable>
       </View>
 
@@ -112,7 +137,7 @@ export default function PflegeAufgabeScreen({ route, navigation }) {
         />
       ) : null}
 
-      <Text style={styles.label}>Wiederholung:</Text>
+      <AppText style={styles.label}>Wiederholung:</AppText>
       <View style={styles.typAuswahl}>
         {wiederholungen.map((eintrag) => (
           <Pressable
@@ -123,19 +148,19 @@ export default function PflegeAufgabeScreen({ route, navigation }) {
             ]}
             onPress={() => setWiederholung(eintrag)}
           >
-            <Text
+            <AppText
               style={[
                 styles.auswahlText,
                 eintrag === wiederholung ? styles.auswahlTextAktiv : null,
               ]}
             >
               {eintrag}
-            </Text>
+            </AppText>
           </Pressable>
         ))}
       </View>
 
-      <Button
+      <AppButton
         title={lädt ? "Wird gespeichert..." : "Speichern"}
         onPress={handleSpeichern}
         disabled={lädt}

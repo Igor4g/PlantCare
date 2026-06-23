@@ -14,6 +14,8 @@ Die App hilft, eigene Pflanzen zu erfassen, Fotos zu speichern und Pflegeaufgabe
 - Expo Notifications
 - React Native Vibration
 
+Hinweis: In der ursprünglichen Planung war Firebase vorgesehen. Wegen technischen Problemen wurde im Projekt Supabase verwendet.
+
 ## Funktionen
 
 - Registrierung
@@ -21,16 +23,19 @@ Die App hilft, eigene Pflanzen zu erfassen, Fotos zu speichern und Pflegeaufgabe
 - Session bleibt nach App-Neustart erhalten
 - Abmelden
 - Pflanzen erfassen
+- Erstes Foto beim Erfassen einer Pflanze hinzufügen
 - Pflanzenliste anzeigen
+- Nächste Pflegeaufgabe in der Pflanzenliste anzeigen
 - Pflanzendetails anzeigen
 - Pflanzen bearbeiten
-- Pflanzen loeschen
+- Pflanzen löschen
 - Fotos mit Kamera oder Galerie hinzufügen
 - Fotoverlauf anzeigen
 - Fotos öffnen und zoomen
 - Fotos löschen
 - Pflegeaufgaben erfassen
 - Wiederholung: täglich, wöchentlich, monatlich
+- Pflegeaufgaben bearbeiten
 - Pflegeaufgaben als erledigt oder offen markieren
 - Pflegeaufgaben löschen
 - Vibration nach dem Speichern einer Pflegeaufgabe
@@ -45,7 +50,7 @@ Sensor:
 Aktor:
 
 - Vibration nach dem Speichern einer Pflegeaufgabe
-- Lokale Benachrichtigung fuer Pflegeerinnerungen
+- Lokale Benachrichtigung für Pflegeerinnerungen
 
 ## Hinweis zu Expo Go
 
@@ -97,7 +102,7 @@ Danach den QR-Code mit Expo Go auf dem Handy scannen.
 | T05 | Abmelden | Benutzer kommt zur Anmeldung zurück |
 | T06 | Pflanze erfassen | Pflanze erscheint in der Pflanzenliste |
 | T07 | Pflanze bearbeiten | Detailansicht zeigt aktualisierte Daten |
-| T08 | Pflanze loeschen | Pflanze verschwindet aus der Liste |
+| T08 | Pflanze löschen | Pflanze verschwindet aus der Liste |
 | T09 | Foto hinzufügen | Foto erscheint im Fotoverlauf und als Vorschau |
 | T10 | Foto öffnen, zoomen und löschen | Foto wird angezeigt, Zoom funktioniert, Foto wird entfernt |
 | T11 | Pflegeaufgabe erfassen | Aufgabe erscheint in der Detailansicht |

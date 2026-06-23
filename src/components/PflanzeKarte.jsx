@@ -1,5 +1,7 @@
 import React from "react";
-import { Button, Image, StyleSheet, Text, View } from "react-native";
+import { Image, StyleSheet, View } from "react-native";
+import AppText from "./AppText";
+import AppButton from "./AppButton";
 
 export default function PflanzeKarte({ pflanze, onDetails }) {
   return (
@@ -11,25 +13,45 @@ export default function PflanzeKarte({ pflanze, onDetails }) {
             style={styles.bild}
           />
         ) : (
-          <Text style={styles.keinBildText}>Kein Foto</Text>
+          <AppText style={styles.keinBildText}>Kein Foto</AppText>
         )}
       </View>
 
       <View style={styles.inhalt}>
-        <Text style={styles.name}>{pflanze.name}</Text>
+        <AppText style={styles.name}>{pflanze.name}</AppText>
 
         {pflanze.pflanzenart ? (
-          <Text>Art: {pflanze.pflanzenart}</Text>
+          <AppText>Art: {pflanze.pflanzenart}</AppText>
         ) : (
-          <Text>Keine Pflanzenart erfasst</Text>
+          <AppText>Keine Pflanzenart erfasst</AppText>
         )}
 
-        {pflanze.notizen ? <Text>Notizen: {pflanze.notizen}</Text> : null}
+        {pflanze.notizen ? (
+          <AppText>Notizen: {pflanze.notizen}</AppText>
+        ) : null}
 
-        <Button title="Details öffnen" onPress={onDetails} />
+        <AppText style={styles.pflegeText}>
+          Nächste Pflege: {datumAnzeigen(pflanze.naechste_pflege_am)}
+        </AppText>
+
+        <AppButton title="Details öffnen" onPress={onDetails} />
       </View>
     </View>
   );
+}
+
+function datumAnzeigen(datum) {
+  if (!datum) {
+    return "Keine geplant";
+  }
+
+  return new Date(datum).toLocaleString("de-CH", {
+    day: "2-digit",
+    month: "2-digit",
+    year: "numeric",
+    hour: "2-digit",
+    minute: "2-digit",
+  });
 }
 
 const styles = StyleSheet.create({
@@ -67,5 +89,9 @@ const styles = StyleSheet.create({
     flex: 1,
     gap: 6,
     justifyContent: "center",
+  },
+  pflegeText: {
+    color: "#2e7d32",
+    fontWeight: "bold",
   },
 });

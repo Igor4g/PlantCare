@@ -1,15 +1,15 @@
 import React, { useRef, useState } from "react";
 import {
   Alert,
-  Button,
   Image,
   Modal,
   Pressable,
   ScrollView,
   StyleSheet,
-  Text,
   View,
 } from "react-native";
+import AppText from "./AppText";
+import AppButton from "./AppButton";
 
 export default function FotoVerlauf({ fotos, onFotoLöschen }) {
   const [ausgewähltesFoto, setAusgewähltesFoto] = useState(null);
@@ -17,7 +17,7 @@ export default function FotoVerlauf({ fotos, onFotoLöschen }) {
   const startAbstand = useRef(null);
 
   if (!fotos || fotos.length === 0) {
-    return <Text>Noch keine Fotos erfasst.</Text>;
+    return <AppText>Noch keine Fotos erfasst.</AppText>;
   }
 
   return (
@@ -30,7 +30,9 @@ export default function FotoVerlauf({ fotos, onFotoLöschen }) {
             onPress={() => setAusgewähltesFoto(foto)}
           >
             <Image source={{ uri: foto.lokaler_pfad }} style={styles.bild} />
-            <Text style={styles.datum}>{datumAnzeigen(foto.erstellt_am)}</Text>
+            <AppText style={styles.datum}>
+              {datumAnzeigen(foto.erstellt_am)}
+            </AppText>
           </Pressable>
         ))}
       </ScrollView>
@@ -42,8 +44,12 @@ export default function FotoVerlauf({ fotos, onFotoLöschen }) {
       >
         <View style={styles.modalContainer}>
           <View style={styles.modalButtons}>
-            <Button title="Schliessen" onPress={modalSchliessen} />
-            <Button title="Foto löschen" onPress={handleFotoLöschen} />
+            <AppButton title="Schliessen" onPress={modalSchliessen} />
+            <AppButton
+              title="Foto löschen"
+              onPress={handleFotoLöschen}
+              variant="danger"
+            />
           </View>
 
           {ausgewähltesFoto ? (

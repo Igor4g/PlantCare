@@ -1,9 +1,6 @@
 import React, { useEffect, useState } from "react";
 import {
   ActivityIndicator,
-  Platform,
-  Text,
-  TextInput,
   View,
 } from "react-native";
 import { NavigationContainer } from "@react-navigation/native";
@@ -17,19 +14,9 @@ import PflanzenListeScreen from "./src/screens/PflanzenListeScreen";
 import PflanzeErfassenScreen from "./src/screens/PflanzeErfassenScreen";
 import PflanzeDetailScreen from "./src/screens/PflanzeDetailScreen";
 import PflegeAufgabeScreen from "./src/screens/PflegeAufgabeScreen";
+import { appSchrift } from "./src/components/AppText";
 
 const Stack = createNativeStackNavigator();
-const appSchrift =
-  Platform.OS === "android" ? "sans-serif-condensed" : "Calibri";
-
-Text.defaultProps = Text.defaultProps || {};
-Text.defaultProps.style = [Text.defaultProps.style, { fontFamily: appSchrift }];
-
-TextInput.defaultProps = TextInput.defaultProps || {};
-TextInput.defaultProps.style = [
-  TextInput.defaultProps.style,
-  { fontFamily: appSchrift },
-];
 
 export default function App() {
   const [session, setSession] = useState(null);

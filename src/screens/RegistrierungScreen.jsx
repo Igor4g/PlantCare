@@ -1,6 +1,8 @@
 import React, { useState } from "react";
-import { View, Text, TextInput, Button, StyleSheet, Alert } from "react-native";
+import { View, TextInput, StyleSheet, Alert } from "react-native";
 import { registrieren } from "../services/authService";
+import AppText, { appSchrift } from "../components/AppText";
+import AppButton from "../components/AppButton";
 
 export default function RegistrierungScreen({ navigation }) {
   const [email, setEmail] = useState("");
@@ -38,7 +40,7 @@ export default function RegistrierungScreen({ navigation }) {
 
   return (
     <View style={styles.container}>
-      <Text style={styles.title}>Registrierung</Text>
+      <AppText style={styles.title}>Registrierung</AppText>
 
       <TextInput
         style={styles.input}
@@ -65,13 +67,13 @@ export default function RegistrierungScreen({ navigation }) {
         secureTextEntry
       />
 
-      <Button
+      <AppButton
         title={laedt ? "Bitte warten..." : "Konto erstellen"}
         onPress={handleRegistrieren}
         disabled={laedt}
       />
 
-      <Button
+      <AppButton
         title="Zurück zur Anmeldung"
         onPress={() => navigation.navigate("Anmeldung")}
       />
@@ -97,5 +99,6 @@ const styles = StyleSheet.create({
     borderColor: "#999",
     padding: 12,
     borderRadius: 6,
+    fontFamily: appSchrift,
   },
 });
