@@ -59,3 +59,42 @@ export async function pflanzeLöschen(pflanzenId) {
     throw error;
   }
 }
+
+export async function pflanzeLadenNachId(pflanzenId) {
+  const { data, error } = await supabase
+    .from("pflanzen")
+    .select("*")
+    .eq("id", pflanzenId)
+    .single();
+
+  if (error) {
+    throw error;
+  }
+
+  return data;
+}
+
+export async function pflanzeAktualisieren(
+  pflanzenId,
+  name,
+  pflanzenart,
+  notizen
+) {
+  const { data, error } = await supabase
+    .from("pflanzen")
+    .update({
+      name: name,
+      pflanzenart: pflanzenart,
+      notizen: notizen,
+      aktualisiert_am: new Date().toISOString(),
+    })
+    .eq("id", pflanzenId)
+    .select()
+    .single();
+
+  if (error) {
+    throw error;
+  }
+
+  return data;
+}

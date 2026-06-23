@@ -1,11 +1,19 @@
 import React, { useState } from "react";
 import { View, Text, TextInput, Button, StyleSheet, Alert } from "react-native";
-import { pflanzeErstellen } from "../services/pflanzenService";
+import {
+  pflanzeErstellen,
+  pflanzeAktualisieren,
+} from "../services/pflanzenService";
 
-export default function PflanzeErfassenScreen({ navigation }) {
-  const [name, setName] = useState("");
-  const [pflanzenart, setPflanzenart] = useState("");
-  const [notizen, setNotizen] = useState("");
+export default function PflanzeErfassenScreen({ route, navigation }) {
+  const vorhandenePflanze = route.params?.pflanze;
+  const istBearbeiten = !!vorhandenePflanze;
+
+  const [name, setName] = useState(vorhandenePflanze?.name || "");
+  const [pflanzenart, setPflanzenart] = useState(
+    vorhandenePflanze?.pflanzenart || ""
+  );
+  const [notizen, setNotizen] = useState(vorhandenePflanze?.notizen || "");
   const [lädt, setLädt] = useState(false);
 
   async function handleSpeichern() {
@@ -16,7 +24,18 @@ export default function PflanzeErfassenScreen({ navigation }) {
 
     try {
       setLädt(true);
-      await pflanzeErstellen(name, pflanzenart, notizen);
+
+      if (istBearbeiten) {
+        await pflanzeAktualisieren(
+          vorhandenePflanze.id,
+          name,
+          pflanzenart,
+          notizen
+        );
+      } else {
+        await pflanzeErstellen(name, pflanzenart, notizen);
+      }
+
       navigation.goBack();
     } catch (error) {
       Alert.alert("Fehler", "Pflanze konnte nicht gespeichert werden.");
@@ -28,7 +47,9 @@ export default function PflanzeErfassenScreen({ navigation }) {
 
   return (
     <View style={styles.container}>
-      <Text style={styles.title}>Pflanze erfassen</Text>
+      <Text style={styles.title}>
+        {istBearbeiten ? "Pflanze bearbeiten" : "Pflanze erfassen"}
+      </Text>
 
       <TextInput
         style={styles.input}
