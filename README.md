@@ -1,6 +1,6 @@
 # PlantCare
 
-PlantCare ist eine einfache Expo React Native App fuer das Modul 335.
+PlantCare ist eine einfache Expo React Native App für das Modul 335.
 Die App hilft, eigene Pflanzen zu erfassen, Fotos zu speichern und Pflegeaufgaben zu planen.
 
 ## Technik
@@ -25,16 +25,16 @@ Die App hilft, eigene Pflanzen zu erfassen, Fotos zu speichern und Pflegeaufgabe
 - Pflanzendetails anzeigen
 - Pflanzen bearbeiten
 - Pflanzen loeschen
-- Fotos mit Kamera oder Galerie hinzufuegen
+- Fotos mit Kamera oder Galerie hinzufügen
 - Fotoverlauf anzeigen
-- Fotos oeffnen und zoomen
-- Fotos loeschen
+- Fotos öffnen und zoomen
+- Fotos löschen
 - Pflegeaufgaben erfassen
-- Wiederholung: taeglich, woechentlich, monatlich
+- Wiederholung: täglich, wöchentlich, monatlich
 - Pflegeaufgaben als erledigt oder offen markieren
-- Pflegeaufgaben loeschen
+- Pflegeaufgaben löschen
 - Vibration nach dem Speichern einer Pflegeaufgabe
-- Geplante lokale Benachrichtigungen fuer Pflegeaufgaben
+- Geplante lokale Benachrichtigungen für Pflegeaufgaben
 
 ## Sensoren und Aktoren
 
@@ -49,11 +49,11 @@ Aktor:
 
 ## Hinweis zu Expo Go
 
-Auf Android zeigt Expo Go seit SDK 53 Einschraenkungen bei `expo-notifications`.
+Auf Android zeigt Expo Go seit SDK 53 Einschränkungen bei `expo-notifications`.
 Darum werden geplante Benachrichtigungen in Android Expo Go nicht aktiv getestet.
 Die Pflegeaufgabe wird trotzdem gespeichert und die direkte Vibration funktioniert.
 
-Fuer den vollstaendigen Test der lokalen Benachrichtigung braucht es spaeter eine APK oder eine Development Build.
+Für den vollständigen Test der lokalen Benachrichtigung braucht es später eine APK oder eine Development Build.
 
 ## Supabase Tabellen
 
@@ -90,21 +90,21 @@ Danach den QR-Code mit Expo Go auf dem Handy scannen.
 
 | Nr. | Testfall | Erwartetes Ergebnis |
 | --- | --- | --- |
-| T01 | Registrierung mit gueltiger E-Mail und Passwort | Benutzer wird erstellt und angemeldet |
-| T02 | Anmeldung mit gueltigen Daten | Pflanzenliste wird angezeigt |
+| T01 | Registrierung mit gültiger E-Mail und Passwort | Benutzer wird erstellt und angemeldet |
+| T02 | Anmeldung mit gültigen Daten | Pflanzenliste wird angezeigt |
 | T03 | Anmeldung mit falschen Daten | Fehlermeldung wird angezeigt |
 | T04 | App neu starten nach Anmeldung | Session bleibt erhalten |
-| T05 | Abmelden | Benutzer kommt zur Anmeldung zurueck |
+| T05 | Abmelden | Benutzer kommt zur Anmeldung zurück |
 | T06 | Pflanze erfassen | Pflanze erscheint in der Pflanzenliste |
 | T07 | Pflanze bearbeiten | Detailansicht zeigt aktualisierte Daten |
 | T08 | Pflanze loeschen | Pflanze verschwindet aus der Liste |
-| T09 | Foto hinzufuegen | Foto erscheint im Fotoverlauf und als Vorschau |
-| T10 | Foto oeffnen, zoomen und loeschen | Foto wird angezeigt, Zoom funktioniert, Foto wird entfernt |
+| T09 | Foto hinzufügen | Foto erscheint im Fotoverlauf und als Vorschau |
+| T10 | Foto öffnen, zoomen und löschen | Foto wird angezeigt, Zoom funktioniert, Foto wird entfernt |
 | T11 | Pflegeaufgabe erfassen | Aufgabe erscheint in der Detailansicht |
-| T12 | Pflegeaufgabe erledigt markieren und loeschen | Status aendert sich sichtbar, Aufgabe kann geloescht werden |
+| T12 | Pflegeaufgabe erledigt markieren und löschen | Status ändert sich sichtbar, Aufgabe kann gelöscht werden |
 
 ## Offene Punkte
 
 - APK Build erstellen
-- Lokale Benachrichtigung in APK oder Development Build vollstaendig testen
-- Dokumentation mit Screenshots ergaenzen
+- Lokale Benachrichtigung in APK oder Development Build vollständig testen
+- Dokumentation mit Screenshots ergänzen
