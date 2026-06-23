@@ -1,9 +1,16 @@
 import React from "react";
-import { View, Text, Button, StyleSheet } from "react-native";
+import { Button, Image, StyleSheet, Text, View } from "react-native";
 
 export default function PflanzeKarte({ pflanze, onDetails }) {
   return (
     <View style={styles.card}>
+      {pflanze.letztes_foto_uri ? (
+        <Image
+          source={{ uri: pflanze.letztes_foto_uri }}
+          style={styles.bild}
+        />
+      ) : null}
+
       <Text style={styles.name}>{pflanze.name}</Text>
 
       {pflanze.pflanzenart ? (
@@ -31,5 +38,11 @@ const styles = StyleSheet.create({
   name: {
     fontSize: 18,
     fontWeight: "bold",
+  },
+  bild: {
+    width: "100%",
+    height: 160,
+    borderRadius: 6,
+    backgroundColor: "#eee",
   },
 });

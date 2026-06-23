@@ -13,7 +13,11 @@ import {
   pflanzeLadenNachId,
   pflanzeLöschen,
 } from "../services/pflanzenService";
-import { fotosLaden, fotoSpeichern } from "../services/fotoService";
+import {
+  fotoLöschen,
+  fotosLaden,
+  fotoSpeichern,
+} from "../services/fotoService";
 import FotoVerlauf from "../components/FotoVerlauf";
 
 export default function PflanzeDetailScreen({ route, navigation }) {
@@ -122,6 +126,10 @@ export default function PflanzeDetailScreen({ route, navigation }) {
       const bildUri = result.assets[0].uri;
       const neuesFoto = await fotoSpeichern(pflanzenId, bildUri);
       setFotos((aktuelleFotos) => [neuesFoto, ...aktuelleFotos]);
+      setPflanze((aktuellePflanze) => ({
+        ...aktuellePflanze,
+        letztes_foto_uri: bildUri,
+      }));
     } catch (error) {
       Alert.alert("Fehler", "Foto konnte nicht gespeichert werden.");
       console.log(error.message);
@@ -134,6 +142,21 @@ export default function PflanzeDetailScreen({ route, navigation }) {
       { text: "Galerie", onPress: handleFotoAusGalerie },
       { text: "Abbrechen", style: "cancel" },
     ]);
+  }
+
+  async function handleFotoLöschen(foto) {
+    try {
+      const neueFotos = await fotoLöschen(foto.id, pflanzenId);
+      setFotos(neueFotos);
+      setPflanze((aktuellePflanze) => ({
+        ...aktuellePflanze,
+        letztes_foto_uri:
+          neueFotos.length > 0 ? neueFotos[0].lokaler_pfad : null,
+      }));
+    } catch (error) {
+      Alert.alert("Fehler", "Foto konnte nicht gelöscht werden.");
+      console.log(error.message);
+    }
   }
 
   async function handleLöschen() {
@@ -170,7 +193,7 @@ export default function PflanzeDetailScreen({ route, navigation }) {
 
       <Text style={styles.label}>Fotoverlauf:</Text>
       {fotosLadenAktiv ? <Text>Fotos werden geladen...</Text> : null}
-      <FotoVerlauf fotos={fotos} />
+      <FotoVerlauf fotos={fotos} onFotoLöschen={handleFotoLöschen} />
 
       <Button title="Foto hinzufügen" onPress={handleFotoHinzufügen} />
 

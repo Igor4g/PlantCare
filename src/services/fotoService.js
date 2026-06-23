@@ -37,5 +37,35 @@ export async function fotoSpeichern(pflanzenId, bildUri) {
     throw error;
   }
 
+  await letztesFotoAktualisieren(pflanzenId, bildUri);
+
   return data;
+}
+
+export async function fotoLöschen(fotoId, pflanzenId) {
+  const { error } = await supabase.from("fotos").delete().eq("id", fotoId);
+
+  if (error) {
+    throw error;
+  }
+
+  const fotos = await fotosLaden(pflanzenId);
+  const neuesLetztesFoto = fotos.length > 0 ? fotos[0].lokaler_pfad : null;
+  await letztesFotoAktualisieren(pflanzenId, neuesLetztesFoto);
+
+  return fotos;
+}
+
+async function letztesFotoAktualisieren(pflanzenId, bildUri) {
+  const { error } = await supabase
+    .from("pflanzen")
+    .update({
+      letztes_foto_uri: bildUri,
+      aktualisiert_am: new Date().toISOString(),
+    })
+    .eq("id", pflanzenId);
+
+  if (error) {
+    throw error;
+  }
 }
