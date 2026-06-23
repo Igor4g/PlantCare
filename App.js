@@ -19,7 +19,8 @@ import PflanzeDetailScreen from "./src/screens/PflanzeDetailScreen";
 import PflegeAufgabeScreen from "./src/screens/PflegeAufgabeScreen";
 
 const Stack = createNativeStackNavigator();
-const appSchrift = Platform.OS === "android" ? "sans-serif" : "Calibri";
+const appSchrift =
+  Platform.OS === "android" ? "sans-serif-condensed" : "Calibri";
 
 Text.defaultProps = Text.defaultProps || {};
 Text.defaultProps.style = [Text.defaultProps.style, { fontFamily: appSchrift }];

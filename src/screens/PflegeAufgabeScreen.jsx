@@ -10,6 +10,7 @@ import {
 } from "react-native";
 import DateTimePicker from "@react-native-community/datetimepicker";
 import { pflegeAufgabeErstellen } from "../services/pflegeService";
+import { kurzeVibration } from "../services/benachrichtigungService";
 
 const pflegeTypen = ["Giessen", "Düngen", "Umtopfen"];
 const wiederholungen = ["täglich", "wöchentlich", "monatlich"];
@@ -38,6 +39,7 @@ export default function PflegeAufgabeScreen({ route, navigation }) {
         erinnerungDatum.toISOString(),
         wiederholung
       );
+      kurzeVibration();
       navigation.goBack();
     } catch (error) {
       Alert.alert("Fehler", "Pflegeaufgabe konnte nicht gespeichert werden.");

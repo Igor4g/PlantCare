@@ -187,11 +187,21 @@ export default function PflanzeDetailScreen({ route, navigation }) {
   }
 
   async function handlePflegeErledigtWechseln(aufgabe) {
+    const neuerStatus = !aufgabe.erledigt;
+
+    setPflegeAufgaben((aktuelleAufgaben) =>
+      aktuelleAufgaben.map((eintrag) =>
+        eintrag.id === aufgabe.id
+          ? { ...eintrag, erledigt: neuerStatus }
+          : eintrag
+      )
+    );
+
     try {
       const aktualisierteAufgabe = await pflegeAufgabeErledigtSetzen(
         aufgabe.id,
         pflanzenId,
-        !aufgabe.erledigt
+        neuerStatus
       );
 
       setPflegeAufgaben((aktuelleAufgaben) =>
@@ -200,6 +210,11 @@ export default function PflanzeDetailScreen({ route, navigation }) {
         )
       );
     } catch (error) {
+      setPflegeAufgaben((aktuelleAufgaben) =>
+        aktuelleAufgaben.map((eintrag) =>
+          eintrag.id === aufgabe.id ? aufgabe : eintrag
+        )
+      );
       Alert.alert("Fehler", "Pflegeaufgabe konnte nicht geändert werden.");
       console.log(error.message);
     }

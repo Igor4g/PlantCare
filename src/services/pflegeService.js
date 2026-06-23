@@ -1,4 +1,8 @@
 import { supabase } from "./supabaseClient";
+import {
+  benachrichtigungAbbrechen,
+  benachrichtigungPlanen,
+} from "./benachrichtigungService";
 
 export async function pflegeAufgabenLaden(pflanzenId) {
   const { data, error } = await supabase
@@ -27,6 +31,11 @@ export async function pflegeAufgabeErstellen(
   }
 
   const benutzerId = userData.user.id;
+  const notificationId = await benachrichtigungPlanen(
+    typ,
+    erinnerungAm,
+    wiederholung
+  );
 
   const { data, error } = await supabase
     .from("pflegeaufgaben")
@@ -37,6 +46,7 @@ export async function pflegeAufgabeErstellen(
       erinnerung_am: erinnerungAm,
       wiederholung: wiederholung,
       erledigt: false,
+      notification_id: notificationId,
     })
     .select()
     .single();
@@ -55,10 +65,33 @@ export async function pflegeAufgabeErledigtSetzen(
   pflanzenId,
   erledigt
 ) {
+  const { data: alteAufgabe, error: ladeError } = await supabase
+    .from("pflegeaufgaben")
+    .select("*")
+    .eq("id", aufgabeId)
+    .single();
+
+  if (ladeError) {
+    throw ladeError;
+  }
+
+  if (alteAufgabe.notification_id) {
+    await benachrichtigungAbbrechen(alteAufgabe.notification_id);
+  }
+
+  const neueNotificationId = erledigt
+    ? null
+    : await benachrichtigungPlanen(
+        alteAufgabe.typ,
+        alteAufgabe.erinnerung_am,
+        alteAufgabe.wiederholung
+      );
+
   const { data, error } = await supabase
     .from("pflegeaufgaben")
     .update({
       erledigt: erledigt,
+      notification_id: neueNotificationId,
     })
     .eq("id", aufgabeId)
     .select()
@@ -74,6 +107,18 @@ export async function pflegeAufgabeErledigtSetzen(
 }
 
 export async function pflegeAufgabeLöschen(aufgabeId, pflanzenId) {
+  const { data: aufgabe, error: ladeError } = await supabase
+    .from("pflegeaufgaben")
+    .select("notification_id")
+    .eq("id", aufgabeId)
+    .single();
+
+  if (ladeError) {
+    throw ladeError;
+  }
+
+  await benachrichtigungAbbrechen(aufgabe.notification_id);
+
   const { error } = await supabase
     .from("pflegeaufgaben")
     .delete()
