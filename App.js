@@ -1,5 +1,11 @@
 import React, { useEffect, useState } from "react";
-import { ActivityIndicator, View } from "react-native";
+import {
+  ActivityIndicator,
+  Platform,
+  Text,
+  TextInput,
+  View,
+} from "react-native";
 import { NavigationContainer } from "@react-navigation/native";
 import { createNativeStackNavigator } from "@react-navigation/native-stack";
 
@@ -13,6 +19,16 @@ import PflanzeDetailScreen from "./src/screens/PflanzeDetailScreen";
 import PflegeAufgabeScreen from "./src/screens/PflegeAufgabeScreen";
 
 const Stack = createNativeStackNavigator();
+const appSchrift = Platform.OS === "android" ? "sans-serif" : "Calibri";
+
+Text.defaultProps = Text.defaultProps || {};
+Text.defaultProps.style = [Text.defaultProps.style, { fontFamily: appSchrift }];
+
+TextInput.defaultProps = TextInput.defaultProps || {};
+TextInput.defaultProps.style = [
+  TextInput.defaultProps.style,
+  { fontFamily: appSchrift },
+];
 
 export default function App() {
   const [session, setSession] = useState(null);
@@ -55,7 +71,7 @@ export default function App() {
 
 function AuthStack() {
   return (
-    <Stack.Navigator>
+    <Stack.Navigator screenOptions={screenOptionen}>
       <Stack.Screen
         name="Anmeldung"
         component={AnmeldungScreen}
@@ -72,7 +88,7 @@ function AuthStack() {
 
 function AppStack() {
   return (
-    <Stack.Navigator>
+    <Stack.Navigator screenOptions={screenOptionen}>
       <Stack.Screen
         name="PflanzenListe"
         component={PflanzenListeScreen}
@@ -96,3 +112,9 @@ function AppStack() {
     </Stack.Navigator>
   );
 }
+
+const screenOptionen = {
+  headerTitleStyle: {
+    fontFamily: appSchrift,
+  },
+};

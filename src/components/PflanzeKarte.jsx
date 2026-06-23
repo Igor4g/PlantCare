@@ -4,24 +4,30 @@ import { Button, Image, StyleSheet, Text, View } from "react-native";
 export default function PflanzeKarte({ pflanze, onDetails }) {
   return (
     <View style={styles.card}>
-      {pflanze.letztes_foto_uri ? (
-        <Image
-          source={{ uri: pflanze.letztes_foto_uri }}
-          style={styles.bild}
-        />
-      ) : null}
+      <View style={styles.bildBereich}>
+        {pflanze.letztes_foto_uri ? (
+          <Image
+            source={{ uri: pflanze.letztes_foto_uri }}
+            style={styles.bild}
+          />
+        ) : (
+          <Text style={styles.keinBildText}>Kein Foto</Text>
+        )}
+      </View>
 
-      <Text style={styles.name}>{pflanze.name}</Text>
+      <View style={styles.inhalt}>
+        <Text style={styles.name}>{pflanze.name}</Text>
 
-      {pflanze.pflanzenart ? (
-        <Text>Art: {pflanze.pflanzenart}</Text>
-      ) : (
-        <Text>Keine Pflanzenart erfasst</Text>
-      )}
+        {pflanze.pflanzenart ? (
+          <Text>Art: {pflanze.pflanzenart}</Text>
+        ) : (
+          <Text>Keine Pflanzenart erfasst</Text>
+        )}
 
-      {pflanze.notizen ? <Text>Notizen: {pflanze.notizen}</Text> : null}
+        {pflanze.notizen ? <Text>Notizen: {pflanze.notizen}</Text> : null}
 
-      <Button title="Details öffnen" onPress={onDetails} />
+        <Button title="Details öffnen" onPress={onDetails} />
+      </View>
     </View>
   );
 }
@@ -33,16 +39,33 @@ const styles = StyleSheet.create({
     borderRadius: 6,
     padding: 12,
     marginBottom: 12,
-    gap: 6,
+    flexDirection: "row",
+    gap: 12,
   },
   name: {
     fontSize: 18,
     fontWeight: "bold",
   },
-  bild: {
-    width: "100%",
-    height: 160,
+  bildBereich: {
+    width: 95,
+    height: 140,
     borderRadius: 6,
     backgroundColor: "#eee",
+    justifyContent: "center",
+    alignItems: "center",
+  },
+  bild: {
+    width: "100%",
+    height: "100%",
+    borderRadius: 6,
+  },
+  keinBildText: {
+    color: "#555",
+    fontSize: 12,
+  },
+  inhalt: {
+    flex: 1,
+    gap: 6,
+    justifyContent: "center",
   },
 });

@@ -30,7 +30,8 @@
           "cameraPermission": "PlantCare braucht Zugriff auf die Kamera, damit du Pflanzenfotos aufnehmen kannst.",
           "microphonePermission": false
         }
-      ]
+      ],
+      "@react-native-community/datetimepicker"
     ],
     "web": {
       "favicon": "./assets/favicon.png"

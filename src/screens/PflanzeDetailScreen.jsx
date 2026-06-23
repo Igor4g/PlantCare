@@ -18,7 +18,13 @@ import {
   fotosLaden,
   fotoSpeichern,
 } from "../services/fotoService";
+import {
+  pflegeAufgabeErledigtSetzen,
+  pflegeAufgabeLöschen,
+  pflegeAufgabenLaden,
+} from "../services/pflegeService";
 import FotoVerlauf from "../components/FotoVerlauf";
+import PflegeAufgabeEintrag from "../components/PflegeAufgabeEintrag";
 
 export default function PflanzeDetailScreen({ route, navigation }) {
   const startPflanze = route.params?.pflanze;
@@ -28,6 +34,8 @@ export default function PflanzeDetailScreen({ route, navigation }) {
   const [lädt, setLädt] = useState(!!pflanzenId && !startPflanze);
   const [fotos, setFotos] = useState([]);
   const [fotosLadenAktiv, setFotosLadenAktiv] = useState(false);
+  const [pflegeAufgaben, setPflegeAufgaben] = useState([]);
+  const [pflegeLadenAktiv, setPflegeLadenAktiv] = useState(false);
 
   useFocusEffect(
     useCallback(() => {
@@ -74,8 +82,27 @@ export default function PflanzeDetailScreen({ route, navigation }) {
         }
       }
 
+      async function pflegeAufgabenNeuLaden() {
+        try {
+          setPflegeLadenAktiv(true);
+          const aufgaben = await pflegeAufgabenLaden(pflanzenId);
+
+          if (screenIstAktiv) {
+            setPflegeAufgaben(aufgaben);
+          }
+        } catch (error) {
+          Alert.alert("Fehler", "Pflegeaufgaben konnten nicht geladen werden.");
+          console.log(error.message);
+        } finally {
+          if (screenIstAktiv) {
+            setPflegeLadenAktiv(false);
+          }
+        }
+      }
+
       pflanzeNeuLaden();
       fotosNeuLaden();
+      pflegeAufgabenNeuLaden();
 
       return () => {
         screenIstAktiv = false;
@@ -159,6 +186,52 @@ export default function PflanzeDetailScreen({ route, navigation }) {
     }
   }
 
+  async function handlePflegeErledigtWechseln(aufgabe) {
+    try {
+      const aktualisierteAufgabe = await pflegeAufgabeErledigtSetzen(
+        aufgabe.id,
+        pflanzenId,
+        !aufgabe.erledigt
+      );
+
+      setPflegeAufgaben((aktuelleAufgaben) =>
+        aktuelleAufgaben.map((eintrag) =>
+          eintrag.id === aktualisierteAufgabe.id ? aktualisierteAufgabe : eintrag
+        )
+      );
+    } catch (error) {
+      Alert.alert("Fehler", "Pflegeaufgabe konnte nicht geändert werden.");
+      console.log(error.message);
+    }
+  }
+
+  function handlePflegeLöschen(aufgabe) {
+    Alert.alert(
+      "Pflegeaufgabe löschen",
+      "Möchtest du diese Pflegeaufgabe wirklich löschen?",
+      [
+        { text: "Abbrechen", style: "cancel" },
+        {
+          text: "Löschen",
+          style: "destructive",
+          onPress: () => pflegeLöschen(aufgabe),
+        },
+      ]
+    );
+  }
+
+  async function pflegeLöschen(aufgabe) {
+    try {
+      await pflegeAufgabeLöschen(aufgabe.id, pflanzenId);
+      setPflegeAufgaben((aktuelleAufgaben) =>
+        aktuelleAufgaben.filter((eintrag) => eintrag.id !== aufgabe.id)
+      );
+    } catch (error) {
+      Alert.alert("Fehler", "Pflegeaufgabe konnte nicht gelöscht werden.");
+      console.log(error.message);
+    }
+  }
+
   async function handleLöschen() {
     try {
       await pflanzeLöschen(pflanze.id);
@@ -206,6 +279,21 @@ export default function PflanzeDetailScreen({ route, navigation }) {
         title="Pflegeaufgabe erfassen"
         onPress={() => navigation.navigate("PflegeAufgabe", { pflanze })}
       />
+
+      <Text style={styles.label}>Pflegeaufgaben:</Text>
+      {pflegeLadenAktiv ? <Text>Pflegeaufgaben werden geladen...</Text> : null}
+      {pflegeAufgaben.length === 0 ? (
+        <Text>Noch keine Pflegeaufgaben erfasst.</Text>
+      ) : (
+        pflegeAufgaben.map((aufgabe) => (
+          <PflegeAufgabeEintrag
+            key={aufgabe.id}
+            aufgabe={aufgabe}
+            onErledigtWechseln={handlePflegeErledigtWechseln}
+            onLöschen={handlePflegeLöschen}
+          />
+        ))
+      )}
 
       <Button title="Pflanze löschen" onPress={handleLöschen} />
     </ScrollView>
