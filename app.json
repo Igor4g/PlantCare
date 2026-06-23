@@ -22,6 +22,16 @@
       },
       "edgeToEdgeEnabled": true
     },
+    "plugins": [
+      [
+        "expo-image-picker",
+        {
+          "photosPermission": "PlantCare braucht Zugriff auf Fotos, damit du Pflanzenfotos auswählen kannst.",
+          "cameraPermission": "PlantCare braucht Zugriff auf die Kamera, damit du Pflanzenfotos aufnehmen kannst.",
+          "microphonePermission": false
+        }
+      ]
+    ],
     "web": {
       "favicon": "./assets/favicon.png"
     }
