@@ -135,13 +135,13 @@ const styles = StyleSheet.create({
   },
   bearbeitenButton: {
     borderWidth: 1,
-    borderColor: "#1976d2",
+    borderColor: "#2f6b3f",
     borderRadius: 6,
     padding: 12,
     alignItems: "center",
   },
   bearbeitenText: {
-    color: "#1976d2",
+    color: "#2f6b3f",
     fontWeight: "bold",
   },
   aktionButton: {

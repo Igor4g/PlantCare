@@ -30,7 +30,22 @@ export default function PflanzenListeScreen({ navigation }) {
     }
   }
 
-  async function handleAbmelden() {
+  function handleAbmelden() {
+    Alert.alert(
+      "Abmelden",
+      "Möchtest du dich wirklich abmelden?",
+      [
+        { text: "Abbrechen", style: "cancel" },
+        {
+          text: "Abmelden",
+          style: "destructive",
+          onPress: abmeldenBestätigen,
+        },
+      ]
+    );
+  }
+
+  async function abmeldenBestätigen() {
     try {
       await abmelden();
     } catch (error) {
@@ -41,17 +56,38 @@ export default function PflanzenListeScreen({ navigation }) {
 
   return (
     <View style={styles.container}>
-      <AppText style={styles.title}>Meine Pflanzen</AppText>
+      <View style={styles.kopfZeile}>
+        <View style={styles.kopfText}>
+          <AppText style={styles.title}>Meine Pflanzen</AppText>
+          <AppText style={styles.untertitel}>
+            Pflanzen, Fotos und Pflegeaufgaben an einem Ort.
+          </AppText>
+        </View>
 
-      <AppButton
-        title="Neue Pflanze erfassen"
-        onPress={() => navigation.navigate("PflanzeErfassen")}
-      />
+        <AppButton
+          title="Abmelden"
+          onPress={handleAbmelden}
+          variant="outline"
+          iconName="log-out-outline"
+          iconOnly
+          style={styles.abmeldenButton}
+        />
+      </View>
 
-      <AppButton
-        title="Unbekannte Pflanze erkennen"
-        onPress={() => navigation.navigate("PflanzeErkennen")}
-      />
+      <View style={styles.aktionen}>
+        <AppButton
+          title="Neue Pflanze erfassen"
+          onPress={() => navigation.navigate("PflanzeErfassen")}
+          iconName="add-outline"
+        />
+
+        <AppButton
+          title="Unbekannte Pflanze erkennen"
+          onPress={() => navigation.navigate("PflanzeErkennen")}
+          variant="outline"
+          iconName="scan-outline"
+        />
+      </View>
 
       {lädt ? <AppText>Pflanzen werden geladen...</AppText> : null}
 
@@ -71,7 +107,6 @@ export default function PflanzenListeScreen({ navigation }) {
         )}
       />
 
-      <AppButton title="Abmelden" onPress={handleAbmelden} />
     </View>
   );
 }
@@ -81,10 +116,31 @@ const styles = StyleSheet.create({
     flex: 1,
     padding: 24,
     gap: 16,
+    backgroundColor: "#f6f8f4",
+  },
+  kopfZeile: {
+    flexDirection: "row",
+    justifyContent: "space-between",
+    alignItems: "flex-start",
+    gap: 12,
+  },
+  kopfText: {
+    flex: 1,
+    gap: 4,
   },
   title: {
     fontSize: 26,
     fontWeight: "bold",
+    color: "#1f3b28",
+  },
+  untertitel: {
+    color: "#52635a",
+  },
+  aktionen: {
+    gap: 8,
+  },
+  abmeldenButton: {
+    marginTop: 2,
   },
   empty: {
     marginTop: 16,

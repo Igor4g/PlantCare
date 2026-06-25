@@ -290,17 +290,29 @@ export default function PflanzeDetailScreen({ route, navigation }) {
       {fotosLadenAktiv ? <AppText>Fotos werden geladen...</AppText> : null}
       <FotoVerlauf fotos={fotos} onFotoLöschen={handleFotoLöschen} />
 
-      <AppButton title="Foto hinzufügen" onPress={handleFotoHinzufügen} />
-
       <AppButton
-        title="Pflanze bearbeiten"
-        onPress={() => navigation.navigate("PflanzeErfassen", { pflanze })}
+        title="Foto hinzufügen"
+        onPress={handleFotoHinzufügen}
+        iconName="camera-outline"
       />
 
-      <AppButton
-        title="Pflegeaufgabe erfassen"
-        onPress={() => navigation.navigate("PflegeAufgabe", { pflanze })}
-      />
+      <View style={styles.aktionsZeile}>
+        <AppButton
+          title="Bearbeiten"
+          onPress={() => navigation.navigate("PflanzeErfassen", { pflanze })}
+          variant="outline"
+          iconName="create-outline"
+          style={styles.aktionsButton}
+        />
+
+        <AppButton
+          title="Pflegeaufgabe"
+          onPress={() => navigation.navigate("PflegeAufgabe", { pflanze })}
+          variant="outline"
+          iconName="calendar-outline"
+          style={styles.aktionsButton}
+        />
+      </View>
 
       <AppText style={styles.label}>Pflegeaufgaben:</AppText>
       {pflegeLadenAktiv ? (
@@ -324,6 +336,7 @@ export default function PflanzeDetailScreen({ route, navigation }) {
         title="Pflanze löschen"
         onPress={handleLöschen}
         variant="danger"
+        iconName="trash-outline"
       />
     </ScrollView>
   );
@@ -334,13 +347,24 @@ const styles = StyleSheet.create({
     flexGrow: 1,
     padding: 24,
     gap: 12,
+    backgroundColor: "#f6f8f4",
   },
   title: {
     fontSize: 26,
     fontWeight: "bold",
+    color: "#1f3b28",
   },
   label: {
     fontWeight: "bold",
     marginTop: 8,
+    color: "#1f3b28",
+  },
+  aktionsZeile: {
+    flexDirection: "row",
+    gap: 8,
+  },
+  aktionsButton: {
+    flex: 1,
+    paddingHorizontal: 8,
   },
 });

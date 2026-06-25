@@ -44,11 +44,19 @@ export default function FotoVerlauf({ fotos, onFotoLöschen }) {
       >
         <View style={styles.modalContainer}>
           <View style={styles.modalButtons}>
-            <AppButton title="Schliessen" onPress={modalSchliessen} />
+            <AppButton
+              title="Schliessen"
+              onPress={modalSchliessen}
+              variant="outline"
+              iconName="close-outline"
+              style={styles.modalButton}
+            />
             <AppButton
               title="Foto löschen"
               onPress={handleFotoLöschen}
               variant="danger"
+              iconName="trash-outline"
+              style={styles.modalButton}
             />
           </View>
 
@@ -160,8 +168,11 @@ const styles = StyleSheet.create({
     paddingHorizontal: 16,
     paddingBottom: 12,
     flexDirection: "row",
-    justifyContent: "space-between",
+    gap: 8,
     backgroundColor: "#fff",
+  },
+  modalButton: {
+    flex: 1,
   },
   zoomBereich: {
     flex: 1,

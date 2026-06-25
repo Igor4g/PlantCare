@@ -23,8 +23,9 @@ export async function pflanzeMitKiErkennen(base64Bild) {
             {
               type: "text",
               text:
-                "Erkenne diese Zimmerpflanze. Antworte kurz auf Deutsch. " +
+                "Erkenne diese Zimmerpflanze. Antworte kurz auf Deutsch, ohne Markdown und ohne Sternchen. " +
                 "Gib wenn möglich den Pflanzennamen, eine Sicherheit in Prozent und 3 kurze Pflegetipps. " +
+                "Nutze kurze Zeilen mit diesen Titeln: Pflanze, Sicherheit, Pflege. " +
                 "Wenn du unsicher bist, schreibe klar, dass es nur eine Vermutung ist.",
             },
             {
