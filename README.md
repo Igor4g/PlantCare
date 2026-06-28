@@ -128,9 +128,9 @@ src/
   services/
   utils/
 docs/
-  Abgabe_Checkliste.md
   Supabase_Setup.md
   Testprotokoll.md
+  screenshots/
 ```
 
 ## Testplan
@@ -148,6 +148,20 @@ Wichtige Testbereiche:
 - Persistenz nach App-Neustart
 - Benutzertrennung
 
+## Screenshots
+
+Die Screenshots für die Abgabe können im Ordner [docs/screenshots](docs/screenshots) gespeichert werden.
+
+Empfohlene Screenshots:
+
+- `01_anmeldung.png`
+- `02_pflanzenliste.png`
+- `03_pflanze_erfassen.png`
+- `04_pflanze_detail.png`
+- `05_fotoverlauf.png`
+- `06_pflegeaufgaben.png`
+- `07_ki_erkennung.png`
+
 ## Abgabe
 
 Für die finale Abgabe werden benötigt:
@@ -157,5 +171,3 @@ Für die finale Abgabe werden benötigt:
 - Dokumentation als README oder Markdown/PDF
 - Testprotokoll
 - Selbstbewertung im Excel-Sheet
-
-Weitere Details stehen in [docs/Abgabe_Checkliste.md](docs/Abgabe_Checkliste.md).
