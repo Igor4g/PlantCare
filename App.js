@@ -6,7 +6,10 @@ import {
 import { NavigationContainer } from "@react-navigation/native";
 import { createNativeStackNavigator } from "@react-navigation/native-stack";
 
-import { supabase } from "./src/services/supabaseClient";
+import {
+  supabase,
+  supabaseKonfigurationOk,
+} from "./src/services/supabaseClient";
 
 import AnmeldungScreen from "./src/screens/AnmeldungScreen";
 import RegistrierungScreen from "./src/screens/RegistrierungScreen";
@@ -24,6 +27,11 @@ export default function App() {
   const [laedt, setLaedt] = useState(true);
 
   useEffect(() => {
+    if (!supabaseKonfigurationOk) {
+      setLaedt(false);
+      return;
+    }
+
     async function sessionLaden() {
       const { data } = await supabase.auth.getSession();
       setSession(data.session);
@@ -42,6 +50,20 @@ export default function App() {
       listener.subscription.unsubscribe();
     };
   }, []);
+
+  if (!supabaseKonfigurationOk) {
+    return (
+      <View style={{ flex: 1, justifyContent: "center", padding: 24 }}>
+        <AppText style={{ fontSize: 24, fontWeight: "bold", marginBottom: 12 }}>
+          Konfiguration fehlt
+        </AppText>
+        <AppText style={{ fontSize: 16 }}>
+          Supabase ist nicht korrekt eingerichtet. Bitte prüfe die
+          EAS-Umgebungsvariablen für den Preview-Build.
+        </AppText>
+      </View>
+    );
+  }
 
   if (laedt) {
     return (
