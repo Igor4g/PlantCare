@@ -254,7 +254,22 @@ export default function PflanzeDetailScreen({ route, navigation }) {
     }
   }
 
-  async function handleLöschen() {
+  function handleLöschen() {
+    Alert.alert(
+      "Pflanze löschen",
+      "Möchtest du diese Pflanze wirklich löschen?",
+      [
+        { text: "Abbrechen", style: "cancel" },
+        {
+          text: "Löschen",
+          style: "destructive",
+          onPress: pflanzeLöschenBestätigen,
+        },
+      ]
+    );
+  }
+
+  async function pflanzeLöschenBestätigen() {
     try {
       await pflanzeLöschen(pflanze.id);
       navigation.goBack();

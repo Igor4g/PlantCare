@@ -1,130 +1,161 @@
 # PlantCare
 
-PlantCare ist eine einfache Expo React Native App für das Modul 335.
-Die App hilft, eigene Pflanzen zu erfassen, Fotos zu speichern und Pflegeaufgaben zu planen.
+PlantCare ist eine mobile App für das Schulprojekt ÜK-Modul 335. Die App hilft dabei, Zimmerpflanzen zu verwalten und erkennen, Fotos als Wachstumsverlauf zu speichern und Pflegeaufgaben mit Erinnerung zu planen.
 
-## Technik
+## Projektinformationen
 
-- Expo SDK 54
-- React Native
-- JavaScript / JSX
-- Supabase Auth
-- Supabase Datenbank
-- Expo Image Picker
-- Expo Notifications
-- React Native Vibration
-- NVIDIA API für optionale KI-Pflanzenerkennung
+- App-Name: PlantCare
+- Entwicklungsart: Hybrid Mobile App
+- Framework: Expo SDK 54 mit React Native
+- Sprache: JavaScript / JSX
+- Backend: Supabase
+- Zielgerät: Android Smartphone
 
-Hinweis: In der ursprünglichen Planung war Firebase vorgesehen. Wegen technischen Problemen wurde im Projekt Supabase verwendet. Diese Änderung wurde im Unterricht erlaubt.
+In der ursprünglichen Planung war Firebase vorgesehen. Wegen technischen Problemen wurde im Projekt Supabase als erlaubte Alternative verwendet. Authentifizierung, persistente Speicherung und Benutzertrennung sind deshalb mit Supabase umgesetzt.
 
-## Funktionen
+## Hauptfunktionen
 
-- Registrierung
-- Anmeldung
-- Session bleibt nach App-Neustart erhalten
-- Abmelden
+- Benutzer registrieren
+- Benutzer anmelden
+- Session nach App-Neustart behalten
+- Benutzer abmelden mit Bestätigung
 - Pflanzen erfassen
-- Erstes Foto beim Erfassen einer Pflanze hinzufügen
 - Pflanzenliste anzeigen
-- Nächste Pflegeaufgabe in der Pflanzenliste anzeigen
 - Pflanzendetails anzeigen
-- Pflanzen bearbeiten
-- Pflanzen löschen
+- Pflanzen bearbeiten und löschen
+- Erstes Foto beim Erfassen einer Pflanze hinzufügen
 - Fotos mit Kamera oder Galerie hinzufügen
 - Fotoverlauf anzeigen
-- Fotos öffnen und zoomen
+- Fotos öffnen und mit zwei Fingern zoomen
 - Fotos löschen
 - Pflegeaufgaben erfassen
-- Wiederholung: täglich, wöchentlich, monatlich
 - Pflegeaufgaben bearbeiten
 - Pflegeaufgaben als erledigt oder offen markieren
 - Pflegeaufgaben löschen
+- Erinnerungsdatum und Uhrzeit setzen
+- Wiederholung täglich, wöchentlich oder monatlich setzen
 - Vibration nach dem Speichern einer Pflegeaufgabe
-- Geplante lokale Benachrichtigungen für Pflegeaufgaben
+- Lokale Benachrichtigungen für Pflegeaufgaben planen
 - Optionale KI-Pflanzenerkennung mit Foto
+- KI-Erkennungen mit Foto und Antwort speichern
 
-## Sensoren und Aktoren
+## Sensoren Und Aktoren
 
 Sensor:
 
-- Kamera oder Galerie ueber `expo-image-picker`
+- Kamera und Fotogalerie über `expo-image-picker`
 
-Aktor:
+Aktoren:
 
-- Vibration nach dem Speichern einer Pflegeaufgabe
-- Lokale Benachrichtigung für Pflegeerinnerungen
+- Vibration über React Native `Vibration`
+- Lokale Benachrichtigung über `expo-notifications`
 
-## Hinweis zu Expo Go
+Hinweis: Android Expo Go unterstützt lokale Notifications mit `expo-notifications` leider nur eingeschränkt. Die App verhindert deshalb Fehler in Expo Go. Die vollständige Prüfung der geplanten Benachrichtigung erfolgt im APK-Build.
 
-Auf Android zeigt Expo Go seit SDK 53 Einschränkungen bei `expo-notifications`.
-Darum werden geplante Benachrichtigungen in Android Expo Go nicht aktiv getestet.
-Die Pflegeaufgabe wird trotzdem gespeichert und die direkte Vibration funktioniert.
+## Persistente Speicherung
 
-Für den vollständigen Test der lokalen Benachrichtigung braucht es später eine APK oder eine Development Build.
-
-## Supabase Tabellen
+Die Daten werden in Supabase gespeichert. Jede Tabelle enthält eine `benutzer_id`, damit Daten dem angemeldeten Benutzer zugeordnet werden können.
 
 Verwendete Tabellen:
 
 - `pflanzen`
 - `fotos`
 - `pflegeaufgaben`
+- `ki_erkennungen`
 - `auth.users`
 
-Wichtige Spalten:
+Die Fotos selbst werden in dieser Schulprojekt-Version lokal auf dem Gerät gespeichert. In Supabase wird der lokale Pfad gespeichert. Das entspricht der geplanten ersten Version. Für eine produktive App wäre Supabase Storage sinnvoll.
 
-- `pflanzen.benutzer_id`
-- `pflanzen.letztes_foto_uri`
-- `pflanzen.naechste_pflege_am`
-- `fotos.pflanze_id`
-- `fotos.lokaler_pfad`
-- `pflegeaufgaben.pflanze_id`
-- `pflegeaufgaben.erinnerung_am`
-- `pflegeaufgaben.wiederholung`
-- `pflegeaufgaben.erledigt`
-- `pflegeaufgaben.notification_id`
+## Authentifizierung
 
-## App starten
+Die Authentifizierung erfolgt mit Supabase Auth über E-Mail und Passwort. Die Session wird mit `AsyncStorage` gespeichert, damit der Benutzer nach einem App-Neustart angemeldet bleibt.
 
-```bash
-npm install
-npx expo start -c
-```
+## Optionale KI-Erweiterung
 
-Danach den QR-Code mit Expo Go auf dem Handy scannen.
-
-Für die optionale KI-Funktion muss in `.env` zusätzlich ein NVIDIA API-Key gesetzt werden:
-
-```bash
-EXPO_PUBLIC_NVIDIA_API_KEY=dein_api_key
-```
+Die App enthält eine optionale KI-Funktion zur Pflanzenerkennung. Der Benutzer nimmt ein Foto auf oder wählt ein Foto aus. Danach wird das Bild an die NVIDIA API gesendet. Die Antwort enthält eine Vermutung zur Pflanze und kurze Pflegetipps.
 
 Verwendetes Modell:
 
 - `minimaxai/minimax-m3`
 
-Hinweis: Der API-Key liegt bei dieser einfachen Schulprojekt-Version in der Expo-Umgebung. Für eine produktive App sollte ein Server oder eine Supabase Edge Function als sicherer Proxy verwendet werden.
+Wichtig: Der NVIDIA API-Key wird in dieser Schulprojekt-Version über `.env` gesetzt. Für eine produktive App sollte ein sicherer Backend-Proxy verwendet werden, damit der API-Key nicht in der App enthalten ist.
+
+## Installation Und Start
+
+Abhängigkeiten installieren:
+
+```bash
+npm install
+```
+
+App starten:
+
+```bash
+npx expo start -c
+```
+
+Danach den QR-Code mit Expo Go auf dem Smartphone öffnen.
+
+## Umgebungsvariablen
+
+Die Datei `.env` darf nicht in GitHub hochgeladen werden. Als Vorlage gibt es `.env.example`.
+
+Benötigte Werte:
+
+```bash
+EXPO_PUBLIC_SUPABASE_URL=deine_supabase_url
+EXPO_PUBLIC_SUPABASE_PUBLISHABLE_KEY=dein_supabase_publishable_key
+EXPO_PUBLIC_NVIDIA_API_KEY=dein_nvidia_api_key
+```
+
+## APK Build
+
+Für die Abgabe wird eine APK-Datei benötigt. Das Projekt enthält eine EAS-Konfiguration:
+
+```bash
+npx eas build -p android --profile preview
+```
+
+Der `preview` Build erstellt eine APK-Datei für die interne Abgabe und Tests.
+
+## Projektstruktur
+
+```text
+App.js
+src/
+  components/
+  screens/
+  services/
+  utils/
+docs/
+  Abgabe_Checkliste.md
+  Supabase_Setup.md
+  Testprotokoll.md
+```
 
 ## Testplan
 
-| Nr. | Testfall | Erwartetes Ergebnis |
-| --- | --- | --- |
-| T01 | Registrierung mit gültiger E-Mail und Passwort | Benutzer wird erstellt und angemeldet |
-| T02 | Anmeldung mit gültigen Daten | Pflanzenliste wird angezeigt |
-| T03 | Anmeldung mit falschen Daten | Fehlermeldung wird angezeigt |
-| T04 | App neu starten nach Anmeldung | Session bleibt erhalten |
-| T05 | Abmelden | Benutzer kommt zur Anmeldung zurück |
-| T06 | Pflanze erfassen | Pflanze erscheint in der Pflanzenliste |
-| T07 | Pflanze bearbeiten | Detailansicht zeigt aktualisierte Daten |
-| T08 | Pflanze löschen | Pflanze verschwindet aus der Liste |
-| T09 | Foto hinzufügen | Foto erscheint im Fotoverlauf und als Vorschau |
-| T10 | Foto öffnen, zoomen und löschen | Foto wird angezeigt, Zoom funktioniert, Foto wird entfernt |
-| T11 | Pflegeaufgabe erfassen | Aufgabe erscheint in der Detailansicht |
-| T12 | Pflegeaufgabe erledigt markieren und löschen | Status ändert sich sichtbar, Aufgabe kann gelöscht werden |
+Der ausführliche Testplan befindet sich in [docs/Testprotokoll.md](docs/Testprotokoll.md).
 
-## Offene Punkte
+Wichtige Testbereiche:
 
-- APK Build erstellen
-- Lokale Benachrichtigung in APK oder Development Build vollständig testen
-- Dokumentation mit Screenshots ergänzen
-- KI-Funktion mit eigenem NVIDIA API-Key testen
+- Registrierung und Anmeldung
+- Logout
+- Pflanzen erfassen, bearbeiten und löschen
+- Fotos hinzufügen, öffnen, zoomen und löschen
+- Pflegeaufgaben erfassen, bearbeiten, erledigen und löschen
+- Erinnerung und Vibration
+- Persistenz nach App-Neustart
+- Benutzertrennung
+
+## Abgabe
+
+Für die finale Abgabe werden benötigt:
+
+- GitHub Repository oder ZIP ohne `node_modules`
+- APK-Datei
+- Dokumentation als README oder Markdown/PDF
+- Testprotokoll
+- Selbstbewertung im Excel-Sheet
+
+Weitere Details stehen in [docs/Abgabe_Checkliste.md](docs/Abgabe_Checkliste.md).
