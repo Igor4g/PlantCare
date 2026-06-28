@@ -150,17 +150,35 @@ Wichtige Testbereiche:
 
 ## Screenshots
 
-Die Screenshots für die Abgabe können im Ordner [docs/screenshots](docs/screenshots) gespeichert werden.
+Die folgenden Screenshots zeigen die wichtigsten Funktionen der App.
 
-Empfohlene Screenshots:
+### Anmeldung
 
-- `01_anmeldung.png`
-- `02_pflanzenliste.png`
-- `03_pflanze_erfassen.png`
-- `04_pflanze_detail.png`
-- `05_fotoverlauf.png`
-- `06_pflegeaufgaben.png`
-- `07_ki_erkennung.png`
+![Anmeldung](docs/screenshots/01_anmeldung.png)
+
+### Pflanzenliste
+
+![Pflanzenliste](docs/screenshots/02_pflanzenliste.png)
+
+### Pflanze erfassen
+
+![Pflanze erfassen](docs/screenshots/03_pflanze_erfassen.png)
+
+### Pflanzendetails
+
+![Pflanzendetails](docs/screenshots/04_pflanze_detail.png)
+
+### Fotoverlauf
+
+![Fotoverlauf](docs/screenshots/05_fotoverlauf.png)
+
+### Pflegeaufgaben
+
+![Pflegeaufgaben](docs/screenshots/06_pflegeaufgaben.png)
+
+### KI-Pflanzenerkennung
+
+![KI-Pflanzenerkennung](docs/screenshots/07_ki_erkennung.png)
 
 ## Abgabe
 
