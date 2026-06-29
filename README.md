@@ -180,12 +180,4 @@ Die folgenden Screenshots zeigen die wichtigsten Funktionen der App.
 
 ![KI-Pflanzenerkennung](docs/screenshots/07_ki_erkennung.png)
 
-## Abgabe
-
-Für die finale Abgabe werden benötigt:
-
-- GitHub Repository oder ZIP ohne `node_modules`
-- APK-Datei
-- Dokumentation als README oder Markdown/PDF
-- Testprotokoll
-- Selbstbewertung im Excel-Sheet
+Hallo! :)
